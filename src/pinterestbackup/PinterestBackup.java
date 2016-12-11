@@ -47,7 +47,7 @@ import java.util.logging.Logger;
 public class PinterestBackup {
 
     private static void PrintHelp(){
-        System.out.println("PinerestBackup Username DestinationPath [-s] [-v].");
+        System.out.println("PinterestBackup Username DestinationPath [-s] [-v].");
         System.out.println("");
         System.out.println("Username:          Pinterest user to backup");
         System.out.println("DestinationPath:   Path to store backup images");
