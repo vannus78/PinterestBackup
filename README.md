@@ -9,10 +9,9 @@ java -jar PinterestBackup.jar Username DestinationPath [-s] [-v]</br>
 Username:          Pinterest user to backup</br>
 DestinationPath:   Path to store backup images</br>
 -s:                Syncronize local images with account. WARNING this option delete local files if the images are not pinned anymore.</br>
--v:                Verbose mode off.</br>
-</br>
-</br>
-Dependencies
+-v:                Verbose mode off.
+
+<h2>Dependencies</h2>
 <ul>
 <li>JDK 1.8</li>
 <li>gson 2.6.2 - Google library used to store JSON information into java classes</li>
