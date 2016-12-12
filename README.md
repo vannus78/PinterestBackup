@@ -2,8 +2,8 @@
 Backup user's PIN from pinterest into local directory.</br>
 </br>
 Simple Command line program to backup a pinterest user PINS to local disk.</br>
-</br>
-Usage:</br>
+
+<h2>Usage</h2>
 java -jar PinterestBackup.jar Username DestinationPath [-s] [-v]</br>
 </br>
 Username:          Pinterest user to backup</br>
