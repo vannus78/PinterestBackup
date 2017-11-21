@@ -32,7 +32,7 @@ import java.nio.file.Path;
  */
 public class BackupConfiguration {
     
-    private final static int DEFAULT_READ_RETRY_ERROR = 3;
+    public final static int DEFAULT_READ_RETRY_ERROR = 3;
     
     private static BackupConfiguration instance = null;
     private final String userName;
@@ -48,14 +48,16 @@ public class BackupConfiguration {
         this.synch = isSynchronized;
         this.readRetry = readRetry;
     }
-    
-    private BackupConfiguration(String userName, Path pathSave, boolean isVerbose, boolean isSynchronized){
-        this(userName, pathSave, isVerbose, isSynchronized, DEFAULT_READ_RETRY_ERROR);
+        
+    public static BackupConfiguration getInstance(String userName, Path pathSave, boolean isVerbose, boolean isSynchronized, int readRetry){
+        if (instance == null)
+            instance = new BackupConfiguration(userName, pathSave,isVerbose, isSynchronized, readRetry);
+        return instance;
     }
     
     public static BackupConfiguration getInstance(String userName, Path pathSave, boolean isVerbose, boolean isSynchronized){
         if (instance == null)
-            instance = new BackupConfiguration(userName, pathSave,isVerbose, isSynchronized);
+            instance = new BackupConfiguration(userName, pathSave,isVerbose, isSynchronized, DEFAULT_READ_RETRY_ERROR);
         return instance;
     }
 

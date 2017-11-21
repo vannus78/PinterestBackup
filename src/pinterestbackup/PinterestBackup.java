@@ -47,18 +47,20 @@ import java.util.logging.Logger;
 public class PinterestBackup {
 
     private static void PrintHelp(){
-        System.out.println("PinterestBackup Username DestinationPath [-s] [-v].");
+        System.out.println("PinterestBackup Username DestinationPath [-s] [-v] [-r].");
         System.out.println("");
         System.out.println("Username:          Pinterest user to backup");
         System.out.println("DestinationPath:   Path to store backup images");
         System.out.println("-s:                Syncronize local images with account. WARNING this option delete local files if the images are not pinned anymore.");
-        System.out.println("-v:                Verbose mode off.");    
+        System.out.println("-v:                Verbose mode off.");
+        System.out.println("-r:                Number of attempts in case of PIN read error. Optional default " + BackupConfiguration.DEFAULT_READ_RETRY_ERROR + ".");
     }
     
     private static boolean checkArgs(String[] args) {
         
         boolean isVerbose = true;
         boolean isSynchronized = false;
+        int iAttempts = BackupConfiguration.DEFAULT_READ_RETRY_ERROR;
         Path destPath = null;
         
         if (args.length < 2){
@@ -87,10 +89,21 @@ public class PinterestBackup {
             if (args[i].equals("-s"))
                 isSynchronized = true;
             if (args[i].equals("-v"))
-                isVerbose = false;            
+                isVerbose = false;
+            if (args[i].startsWith("-r")){
+                String arg = args[i].replace("-r", "");
+                try{
+                    iAttempts = Integer.parseInt(args[i].replace("-r", ""));
+                }
+                catch(NumberFormatException ex){
+                    System.err.println("Invalid number of attempts supplied.\n");
+                    PrintHelp();
+                    return false;
+                }
+            }
         }
         
-        config = BackupConfiguration.getInstance(args[0], destPath, isVerbose, isSynchronized);
+        config = BackupConfiguration.getInstance(args[0], destPath, isVerbose, isSynchronized, iAttempts);
         logBackup.setFilter(new BackupLoggerFilter(isVerbose));
 
         return true;
