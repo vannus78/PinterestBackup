@@ -112,8 +112,21 @@ public class PINDownloader implements Runnable {
                 }
                 
                 if (foundOriginal){
+                    int attempts = 1;
                     pinPath = Paths.get(pinPath.toString(),pinName);
-                    savePinToFile(currPin,pinPath);
+                    
+                    while (true){
+                        try{
+                            savePinToFile(currPin,pinPath);
+                            break;
+                        }
+                        catch(PinCopyException ex){
+                            if (attempts++ > config.getReadRetry()){
+                                throw ex;
+                            }
+                        }
+                    }
+                    
                     this.setFileMapFound(pinPath);
                 }
             }
@@ -174,7 +187,7 @@ public class PINDownloader implements Runnable {
      * 
      * @param pin
      * @param pinPath: Path to save
-     * @throws pinterestbackup.PinCopyException
+     * @throws pinterestbackup.exceptions.PinCopyException
      */
     public void savePinToFile(PinterestPin pin, Path pinPath) throws PinCopyException{
         HttpGet httpgetImg = new HttpGet();

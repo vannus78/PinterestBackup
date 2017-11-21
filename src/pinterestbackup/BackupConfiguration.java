@@ -32,17 +32,25 @@ import java.nio.file.Path;
  */
 public class BackupConfiguration {
     
+    private final static int DEFAULT_READ_RETRY_ERROR = 3;
+    
     private static BackupConfiguration instance = null;
     private final String userName;
     private final Path pathSave;
     private final boolean verbose;
     private final boolean synch;
+    private final int readRetry;
     
-    private BackupConfiguration(String userName, Path pathSave, boolean isVerbose, boolean isSynchronized){
+    private BackupConfiguration(String userName, Path pathSave, boolean isVerbose, boolean isSynchronized, int readRetry){
         this.userName = userName;
         this.pathSave = pathSave;
         this.verbose = isVerbose;
         this.synch = isSynchronized;
+        this.readRetry = readRetry;
+    }
+    
+    private BackupConfiguration(String userName, Path pathSave, boolean isVerbose, boolean isSynchronized){
+        this(userName, pathSave, isVerbose, isSynchronized, DEFAULT_READ_RETRY_ERROR);
     }
     
     public static BackupConfiguration getInstance(String userName, Path pathSave, boolean isVerbose, boolean isSynchronized){
@@ -65,6 +73,10 @@ public class BackupConfiguration {
 
     public Path getPathSave() {
         return pathSave;
+    }
+    
+    public int getReadRetry(){
+        return readRetry;
     }
     
 }
