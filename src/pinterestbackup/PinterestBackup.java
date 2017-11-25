@@ -85,15 +85,16 @@ public class PinterestBackup {
             return false;
         }
         
-        for (int i=2; i<args.length; i++){
+        int i = 2;
+        while (i < args.length)
+        {
             if (args[i].equals("-s"))
                 isSynchronized = true;
-            if (args[i].equals("-v"))
+            else if (args[i].equals("-v"))
                 isVerbose = false;
-            if (args[i].startsWith("-r")){
-                String arg = args[i].replace("-r", "");
+            else if (args[i].equals("-r")){
                 try{
-                    iAttempts = Integer.parseInt(args[i].replace("-r", ""));
+                    iAttempts = Integer.parseInt(args[++i]);
                 }
                 catch(NumberFormatException ex){
                     System.err.println("Invalid number of attempts supplied.\n");
@@ -101,9 +102,15 @@ public class PinterestBackup {
                     return false;
                 }
             }
+            else{
+                    System.err.println("Unrecognized parameter "+ args[i] +".\n");
+                    PrintHelp();
+                    return false;               
+            }
+            i++;
         }
         
-        config = BackupConfiguration.getInstance(args[0], destPath, isVerbose, isSynchronized, iAttempts);
+        config = new BackupConfiguration(args[0], destPath, isVerbose, isSynchronized, iAttempts);
         logBackup.setFilter(new BackupLoggerFilter(isVerbose));
 
         return true;
